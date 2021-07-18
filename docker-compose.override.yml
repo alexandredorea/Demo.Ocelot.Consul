@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  consul:
+    ports:
+      - "8500"
+
+  demo.microservico.apigateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:9011;http://+:9010
+    ports:
+      - "9010"
+      - "9011"
+
+  demo.microservico.catalogos:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:9021;http://+:9020
+      - Servico__serviceDiscoveryAddress=http://consul:8500
+      - Servico__serviceAddress=http://catalogos:9020
+      - Servico__serviceName=Demo.Microservico.Catalogos
+      - Servico__serviceId=Catalogos
+    ports:
+      - "9020"
+      - "9021"
+
+  demo.microservico.produtos:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:9031;http://+:9030
+      - Servico__serviceDiscoveryAddress=http://consul:8500
+      - Servico__serviceAddress=http://produtos:9030
+      - Servico__serviceName=Demo.Microservico.Produtos
+      - Servico__serviceId=Produtos
+    ports:
+      - "9030"
+      - "9031"

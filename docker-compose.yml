@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  demo.service.discovery:
+    image: consul:latest
+    hostname: consul
+    container_name: consul
+    command: consul agent -server -ui -node=server-1 -bootstrap-expect=1 -client="0.0.0.0"
+    #command: consul agent -dev -log-level=warn -ui -client="0.0.0.0"
+    #restart: always
+    #ports:
+      #- "8500:8500"
+      #- "8600:8600/udp"
+
+  demo.microservico.apigateway:
+    image: api-gateway:latest
+    build: 
+      context: .
+      dockerfile: src/Demo.Microservico.ApiGateway/Dockerfile
+    container_name: api-gateway
+    #restart: always
+    #ports:
+      #- "9010:9010"
+      #- "9011:9011"
+
+  demo.microservico.catalogos:
+    image: api-catalogo:latest
+    build: 
+      context: .
+      dockerfile: src/Demo.Microservico.Catalogos/Dockerfile
+    container_name: api-catalogo
+    #restart: always
+    #ports:
+    #    - "9020:9020"
+    #    - "9021:9021"
+  
+  demo.microservico.produtos:
+    image: api-produto:latest
+    build: 
+      context: .
+      dockerfile: src/Demo.Microservico.Produtos/Dockerfile
+    container_name: api-produto
+    #restart: always
+    #ports:
+    #    - "9030:9030"
+    #    - "9031:9031"
